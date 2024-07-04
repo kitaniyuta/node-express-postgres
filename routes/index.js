@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const knex = require('../db/knex');
-const pg = require('pg');
+/*const pg = require('pg');
 
 
 const connection = new pg.Pool({
@@ -11,6 +11,7 @@ const connection = new pg.Pool({
   database: 'todo_app',
   port: 5432,
   });
+  */
   
 
   router.get('/', function (req, res, next) {
