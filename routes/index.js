@@ -15,6 +15,10 @@ const connection = new pg.Pool({
   
 
   router.get('/', function (req, res, next) {
+    const userId = req.session.userid;
+    const isAuth = Boolean(userId);
+    console.log(`isAuth: ${isAuth}`);
+
     knex("tasks")
       .select("*")
       .then(function (results) {
@@ -22,12 +26,14 @@ const connection = new pg.Pool({
         res.render('index', {
           title: 'ToDo App',
           todos: results,
+          isAuth: isAuth,
         });
       })
       .catch(function (err) {
         console.error(err);
         res.render('index', {
           title: 'ToDo App',
+          isAuth: isAuth,
         });
       });
   });
@@ -35,6 +41,9 @@ const connection = new pg.Pool({
 
 
   router.post('/', function (req, res, next) {
+    const userId = req.session.userid;
+    const isAuth = Boolean(userId);
+
     const todo = req.body.add;
     knex("tasks")
       .insert({user_id: 1, content: todo})
@@ -45,10 +54,13 @@ const connection = new pg.Pool({
         console.error(err);
         res.render('index', {
           title: 'ToDo App',
+          isAuth: isAuth,
         });
       });
   });
 
 router.use('/signup', require('./signup'));
+router.use('/signin', require('./signin'));
+router.use('/logout', require('./logout'));
 
 module.exports = router;
